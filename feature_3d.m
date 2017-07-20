@@ -36,7 +36,7 @@ for n=1:mx
        d   = norm (cross( (p_m - [X1(Pi(1)) ; Y1(Pi(1)) ; Z1(Pi(1)) ]) , [X1(Pi(1))-X1(Pi(end)) ; Y1(Pi(1))-Y1(Pi(end)) ; Z1(Pi(1))-Z1(Pi(end)) ]))/Li ;
          
     else
-        p_m = [ mean(X1(pi(:))); mean(Y1(pi(:))); mean(Z1(pi(:))) ] ;
+        p_m = [ mean(X1(Pi(:))); mean(Y1(Pi(:))); mean(Z1(Pi(:))) ] ;
         d   = norm (cross( (p_m - [X1(Pj(1)) ; Y1(Pj(1)) ; Z1(Pj(1)) ]) , [X1(Pj(1))-X1(Pj(end)) ; Y1(Pj(1))-Y1(Pj(end)) ; Z1(Pi(1))-Z1(Pj(end)) ]))/Lj  ;
     end
     
@@ -45,7 +45,7 @@ for n=1:mx
  
  %% pair label
  label_i = Linei(1,11) ;
- label_j = Linej(1,13) ; 
+ label_j = Linej(1,11) ; 
  
  if (label_i==1 )&&(label_j== 1)     % both discountinuty
      p_label = 'a' ;
@@ -67,7 +67,7 @@ for n=1:mx
  %% feature vector elements
     
     
- feature_vec = [ d ; ang ; max(Li,Lj) ; min(Li,Lj)/max(Li,Lj) ; ?? ; length(Pi)+length(Pj) ; p_label ; mean(Zm) ; dc ] ;
+ feature_vec = [ d ; ang ; max(Li,Lj) ; min(Li,Lj)/max(Li,Lj) ;  length(Pi)+length(Pj) ; p_label ; mean(Zm) ; dc ] ;
  
  
 end

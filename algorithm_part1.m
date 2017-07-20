@@ -25,11 +25,39 @@ BW20 = remove_boundries(BW20, P.zone , P.bound) ;
 [Gx, Gy] = imgradientxy(Id);
 [Gmag, Gdir] = imgradient(Gx, Gy);
 
+%% only for test purposes 
+% % case 1 : mirros left half to the right half
+% index1=find(Gdir>90) ;
+% index2=find(Gdir<-90) ; 
+% Gdir1 = Gdir ; 
+% Gdir1(index1) = 180-Gdir1(index1);
+% Gdir1(index2) = -(180+Gdir1(index2));
+% 
+% %case 2 : mirrors bottom half to the top half
+% Gdir2 = Gdir ; 
+% index3= find(Gdir2<0) ;
+% Gdir2(index3) = abs(Gdir(index3));
+% 
+% if P.filter_gd
+%     Gdir1 = wiener2(Gdir1,[5 5]);
+%     Gdir2 = wiener2(Gdir2,[5 5]);
+% end
+% 
+% [BW31,~] = edge(Gdir1,'canny',0.55);
+% [BW32,~] = edge(Gdir2,'canny',0.55);
+% BW33 = or(BW31,BW32) ; 
+% BW30 = BW33 ;
+
+% original code 
 if P.filter_gd
     Gdir = wiener2(Gdir,[5 5]);
 end
 
 [BW30,~] = edge(Gdir,'canny',P.thresh_curve);
+
+
+%%
+
 BW30 = remove_boundries(BW30, P.zone , P.bound) ;
 
 L00 = label2rgb(fix(Id_o));

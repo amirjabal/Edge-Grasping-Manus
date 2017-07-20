@@ -1,5 +1,5 @@
-close all;clear;clc
-N = 1; %   number of picture set,
+% close all;clear;clc
+% N = 1; %   number of picture set,
 M = 20; %each set has 9 pics of the same view,
 dep1 = cell(N,M); % 
 img = cell(1,N);
@@ -15,16 +15,16 @@ iter = 1;
 
 for n = 1:N*M
 %     depp =  sprintf('C:\\MANUS\\test\\capture_img10\\depimg%d.png',n);  % load all the depth img
-    depp =  sprintf('C:\\MANUS\\CommonSpace\\new_vision\\capture_img\\depimg%d.png',n);  % load all the depth img  new_vision\\
+    depp =  sprintf('C:\\MANUS\\CommonSpace\\capture_img\\depimg%d.png',n);  % load all the depth img  new_vision\\
     dep1{iter,n-(iter-1)*M} = double(imread(depp));
     avgd{iter} = dep1{iter,n-(iter-1)*M}+avgd{iter}; % for culculate the average depth of each depth img set.
     %    n
     if n == iter*M
 %         imgg = sprintf('C:\\MANUS\\test\\capture_img10\\img%d.jpg',n);% load color img
-        imgg = sprintf('C:\\MANUS\\CommonSpace\\new_vision\\capture_img\\img%d.jpg',n);% load color img
+        imgg = sprintf('C:\\MANUS\\CommonSpace\\capture_img\\img%d.jpg',n);% load color img
         img{iter} = imread(imgg);
 %         posf = sprintf('C:\\MANUS\\test\\capture_img10\\pos%d.txt',n);
-        posf = sprintf('C:\\MANUS\\CommonSpace\\new_vision\\capture_img\\pos%d.txt',n);
+        posf = sprintf('C:\\MANUS\\CommonSpace\\capture_img\\pos%d.txt',n);
         pos(iter,:) = importdata(posf);
         avgd{iter} = avgd{iter}/M; % get the average depth of each set.
         avgd{iter}(avgd{iter}<thlow)= 0 ;
@@ -74,24 +74,24 @@ for j = 2:M;% for each view set
     
     
 end
-        figure
+%         figure
         orgdep = dep1{iter,j};
         orgdep(orgdep<thlow)= 0 ;
         orgdep(orgdep>thhigh)= 0 ;
-        imagesc(orgdep)
-        title('original depth map')
+%         imagesc(orgdep)
+%         title('original depth map')
 
 
-        figure
+%         figure
         avgdepM{iter} = dep1{iter,j}.*t3; % get the final depth map from first depth map.
         % avgdepM{j} = avgd{j}.*t3; %   I also tried with the averaged depth map,
 %                                     % but the result still has some noise.
-% 
-        imagesc(avgdepM{iter})
-        title('and operator')
-        figure;
-        imagesc(avgd{iter})
-        title('average')
+% % 
+%         imagesc(avgdepM{iter})
+%         title('and operator')
+%         figure;
+%         imagesc(avgd{iter})
+%         title('average')
 end
 % avgdepM = avgdep.*t3;
 
@@ -101,3 +101,4 @@ end
 % end
 
 clearvars -except avgd avgdepM dep1 img pos
+save('C:\\Users\\zding\\Documents\\GitHub\\Edge-Grasping-Manus\\datasets\\07191.mat')

@@ -1,15 +1,29 @@
 %
-clc ; close all ; clear
-%load('Primesense2View0710.mat')
-load('datasets/Primesense_0713_10pics.mat')
-cc = 	6;
+clc ; clear ; close all
+% load('datasets/Primesense_0713_10pics.mat')
+
+
+
+N = 33;
+% prepare_data2;
+
+device_data= 'prime' ; 
+%load('datasets/07183.mat') % collected from MANUS in realtime
+load('datasets/07191.mat')
+
+%device_data= 'kinect' ;
+%load('datasets/kinectMultiViews.mat') 
+cc = 	33;
 %load('dep07072.mat')
 manus_initial_parameters
-P.mode = 'auto' ;
+P.mode = 'manual' ;
 
 %%  Run algorithm
+tic
 algorithm_part1
+toc
 manus_pcl_process
+draw_disc_curv(Line_new,Ic,'Labeled line',33)
 if strcmp(P.mode,'manual')
     draw_pairs_v2(ListPair,Line_new,Ic,1) % paired lines
     pair_no  = user_selection(ListPair,Line_new,ListPoint_new, Id,P) ;
@@ -38,18 +52,21 @@ elseif strcmp(P.mode,'auto')
                 auto_pair_selection
             end
         catch
-            display(sprintf ('There was an error in computations of pair %d',pair_no))
+            %display(sprintf ('There was an error in computations of pair %d',pair_no))
         end
         clean_vars
-        pause(0.5)
+        %pause(0.5)
     end
     filtered_pairs
     draw_pairs_v2(ListPair,Line_new,Ic,40) % paired lines
-    pause(1)
+    %pause(1)
     draw_pairs_v2(ListPair(filtered_pairs,:),Line_new,Ic,41) % filtered paired lines
 end
 
 %%
+
+figure;imshow(L00)
+figure;imshow(L22)
 %pair_no = point2pair(ListPair,Line_new,xypos,P);
 
 %% Description

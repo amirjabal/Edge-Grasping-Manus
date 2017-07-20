@@ -1,64 +1,27 @@
 
 %% load data
-% tic
-%prepare_data2
 
-% toc
-% N = 5;
-% dep1 = cell(1,N);
-% img = cell(1,N);
-% avgd = zeros(480,640);
-% for n = 1:N
-% depp =  sprintf('H:\\MANUS\\test\\capture_img\\depimg%d.png',n);
-% imgg = sprintf('H:\\MANUS\\test\\capture_img\\img%d.jpg',n);
-% dep1{n} = imread(depp);
-% img{n} = imread(imgg);
-% avgd = double(dep1{n})+avgd;
-% end
-%
-%
-% avgdep = avgd/N;
-% avgdep(avgdep<300)= 0 ;
-% avgdep(avgdep>1000)= 0 ;
-% avgdepf = medfilt2(avgdep,[8 8]);
-% figure
-% imagesc(avgdep);
-% figure
-% imagesc(avgdepf);
-
-% xypos = [477 242];
-%xypos_ad = sprintf('C:\\MANUS\\CommonSpace\\new_vision\\xyinfo.txt');
-%xypos = importdata(xypos_ad);
 xypos = [148 340];
 %cc = 	1;
 
-
 %Id_o = dep_withmask{cc};  %changed ***
 Id_o = avgdepM{cc};
-%Id_o = avg_dep{cc};
-
-
-% Id_o = avgd{cc};
-% Id_o = t0;
-% Id_o = medfilt2(avgdepM{cc},[3 3]);0
-
-% Id_o = dep1{1,cc};
-% Id_o = avgdepM;
+%Id_o = avgd{cc};
 
 Ic = img{cc}; %changed ****
 %Ic = clr{cc} ;
 
 
-% Ic = img;
-% Ic = imread('H:\\MANUS\\test\\capture_img\\img1.jpg');
-% load ExpClut_20161104_21
-
+%Id_o = K2D_view1{cc,1};
+%Ic_test =K2D_view1{cc,1} ;
+%Ic = label2rgb(fix(Ic_test));
+%Ic2 = K2_view1{cc,1} ;
 %% LARGE OBJECTS PARAMETERS
 
 % edge detection and line segmenting process
 P.lld = 300 ; P.hhd = 1000; %bounds for removing data %default 50 1800
 P.thresh_dis  = 0.07 ; % defualt 0.03
-P.thresh_curve  = 0.3 ; % defualt 0.25
+P.thresh_curve  = 0.20 ; % defualt 0.25
 P.zone  = [50 430 50 590] ;
 P.bound = 0 ;
 P.tol_edge = 3 ;
@@ -109,12 +72,19 @@ pit = -(pos(cc,5))/180*pi;
 roll = (sign(pos(cc,6))*(180-abs(pos(cc,6))))/180*pi;
 camera_offset = [63,38,37];
 P.baseloc = (1*pos(cc,1:3)+[angle2dcm(yaw, pit,roll )'*camera_offset']')/1000;
-[angle2dcm(yaw, pit,roll )'*camera_offset']' ;
+% [angle2dcm(yaw, pit,roll )'*camera_offset']' ;
 P.pos = pos(cc,:);
 P.rot = angle2dcm(yaw, pit,roll );%
 P.rot2 = eye(3);
 pos(cc,:);
 P.flag_tran = 1;
+
+
+if strcmp(device_data, 'kinect')
+    P.zone  = [50 420 50 490] ;
+end
+
+    
 
 
 
@@ -135,4 +105,6 @@ P.flag_tran = 1;
 % end
 
 %% clean the workspace
-clearvars('-except','Ic','Id_o','Ixyz','P','hdsub','pclsub','data_num','xypos')
+
+
+%clearvars('-except','Ic','Id_o','Ixyz','P','hdsub','pclsub','data_num','xypos')

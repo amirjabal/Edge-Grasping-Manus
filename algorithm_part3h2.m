@@ -29,11 +29,20 @@ ind3 = find(isnan(set_points3(:,1))); set_points3(ind3,:)=[];
 t = 0.005 ; % it was 0.001 before nov 4
 
 
-[V, L, ~] = ransacfitline(set_points2',t) ; % fit ransac line for a line on the longest edge
+[V, L, in11] = ransacfitline(set_points2',t) ; % fit ransac line for a line on the longest edge
 lp1 = V(:,1)'  ; lp2 = V(:,2)'  ;  LL1 = [lp1 ; lp2]';
+var_v1 = V  ;
+var_l1 = L  ;
+var_in1 = in11 ; 
+var_len1 = length(set_points2) ;
 
-[V, L, ~] = ransacfitline(set_points3',t) ; % fit ransac line for a line on the longest edge
+[V, L, in11] = ransacfitline(set_points3',t) ; % fit ransac line for a line on the longest edge
 lp1 = V(:,1)'  ; lp2 = V(:,2)'  ;  LL2 = [lp1 ; lp2]';
+var_v2 = V  ;
+var_l2 = L  ;
+var_in2 = in11 ; 
+var_len2 = length(set_points3) ;
+
 
 %%
 

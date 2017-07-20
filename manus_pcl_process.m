@@ -16,9 +16,9 @@ Ixyz(:,:,2) = -Ixyz(:,:,2) ; Ixyz(:,:,3) = -Ixyz(:,:,3) ; % aligned with Manus a
 Cloud_Xk = Ixyz(:,:,1) ; Cloud_Yk = Ixyz(:,:,2) ; Cloud_Zk = Ixyz(:,:,3) ;
 
 % convert to a one layer matrix
-Ixyz2 = reshape(Cloud_Xk(:),1,480*640);
-Ixyz2(2,:) = reshape(Cloud_Yk(:),1,480*640);
-Ixyz2(3,:) = reshape(Cloud_Zk(:),1,480*640);
+Ixyz2 = reshape(Cloud_Xk(:),1,size(Id,1)*size(Id,2));
+Ixyz2(2,:) = reshape(Cloud_Yk(:),1,size(Id,1)*size(Id,2));
+Ixyz2(3,:) = reshape(Cloud_Zk(:),1,size(Id,1)*size(Id,2));
 
 % translate and rotate the point cloud to the base frame
 Cloud_B2 = P.rot'*P.rot2*Ixyz2 ;
