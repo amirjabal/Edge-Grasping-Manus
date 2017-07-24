@@ -29,26 +29,21 @@ ind3 = find(isnan(set_points3(:,1))); set_points3(ind3,:)=[];
 t = 0.005 ; % it was 0.001 before nov 4
 
 
-[V, L, in11] = ransacfitline(set_points2',t) ; % fit ransac line for a line on the longest edge
+[V, L, ~] = ransacfitline(set_points2',t) ; % fit ransac line for a line on the longest edge
 lp1 = V(:,1)'  ; lp2 = V(:,2)'  ;  LL1 = [lp1 ; lp2]';
-var_v1 = V  ;
-var_l1 = L  ;
-var_in1 = in11 ; 
-var_len1 = length(set_points2) ;
+Line1_3dLength = sqrt(sum((V(:,1)-V(:,2)).^2))  ;
+Line1_nPixel = length(set_points2) ;
 
-[V, L, in11] = ransacfitline(set_points3',t) ; % fit ransac line for a line on the longest edge
+[V, L, ~] = ransacfitline(set_points3',t) ; % fit ransac line for a line on the longest edge
 lp1 = V(:,1)'  ; lp2 = V(:,2)'  ;  LL2 = [lp1 ; lp2]';
-var_v2 = V  ;
-var_l2 = L  ;
-var_in2 = in11 ; 
-var_len2 = length(set_points3) ;
+Line2_3dLength = sqrt(sum((V(:,1)-V(:,2)).^2))  ;
+Line2_nPixel = length(set_points3) ;
 
 
 %%
 
 Dir_XXP1 = (LL1(:,1)-LL1(:,2))/norm(LL1(:,1)-LL1(:,2)) ; % unit vector of the longer line
 Dir_XXP2 = (LL2(:,1)-LL2(:,2))/norm(LL2(:,1)-LL2(:,2)) ; % unit vector of the shorter line
-
 
 %% Detect if the object is thin or not and then assign DirX & DirZ
 
@@ -96,10 +91,10 @@ Dir_vecRAN = [Dir_XX Dir_YY Dir_ZZ] ; % x-axis y-axis z-axis
 t_zx = abs(Dir_XX(3)/Dir_XX(1)) ; t_zy = abs(Dir_XX(3)/Dir_XX(2)) ; % fraction of z value wrt x and y of gripper closure direction
 if strcmp(flag_orientation,'side') || strcmp(flag_orientation,'inclined')
     if (t_zx<0.2)||(t_zy<0.2)
-        display('VERTICAL CLOSURE') % 
+        %display('VERTICAL CLOSURE') % 
         flag_orientation2 = 'side_v' ; 
     elseif (t_zx>5)||(t_zy>5)
-        display('HORIZONTAL CLOSURE')
+        %display('HORIZONTAL CLOSURE')
         flag_orientation2 = 'side_h' ;  
     end
 end
@@ -128,5 +123,15 @@ end
 % fclose(fid2);
 
 
-%%
+%%  forming feature vector
+
+% elements: 1)ransac error  2)pair 3d distnce(m)  
+% 3)length of line1 (cm)  4) number of pixels line1 5)length of line2(cm)   6)number of pixels line2  
+% 7) angle of normal vector with z axis of the base 8) 7) angle of normal vector with x axis of the base
+if strcmp(P.mode,'manual')
+    x0 = 1 ; 
+end
+feat_vec(x0,:) = [error_ransac dis_L1L2_3d*100 Line1_3dLength*100  Line1_nPixel  Line2_3dLength*100  Line2_nPixel  theta20 theta30] ; 
+feat_vecN(x0,:) = [error_ransac/0.15  Line1_3dLength*100/Line1_nPixel  Line2_3dLength*100/Line2_nPixel...
+                    abs(theta20-90)/180 min(theta30,180-theta30)/180]; % normalized version
 

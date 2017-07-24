@@ -143,3 +143,26 @@ LineInteresting = LineInteresting(index,:)   ;
 ListPair = line_match_1026(LineInteresting,P) ;
 
 clear index f1
+
+
+
+%% for testing purposes
+% close all
+BW_thicken =  bwmorph(BW20,'thicken',2);
+BW_thicken_not = ~BW_thicken ; 
+BW30_new = and(BW_thicken_not,BW30) ; 
+draw_2LogicalOnImage(BW30,BW30_new,Ic,'old vs new',11)
+draw_LogicalOnImage(BW20,Ic,'depth disc',12)
+DE10_new  = morpho_modify_0712(BW30_new) ;
+draw_LogicalOnImage(DE10,Ic,'after morpho old',13)
+draw_LogicalOnImage(DE10_new,Ic,'after morpho new',14)
+
+% figure;imshow(BW20)
+% figure;imshow(BW30)
+% figure;imshow(BW_thicken)
+% figure;imshow(BW30_new)
+% draw_2LogicalOnImage(BW20,BW30_new,Ic,'depth/curve disc.',13)
+% hold on ;
+% [row1,col1]=find(BW30==1) ;  
+% plot(col1,row1,'.','color','k') ;
+% figure;imshow(L22)

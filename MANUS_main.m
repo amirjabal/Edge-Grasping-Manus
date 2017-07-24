@@ -2,26 +2,24 @@
 clc ; clear ; close all
 % load('datasets/Primesense_0713_10pics.mat')
 
-
-
 N = 33;
 % prepare_data2;
 
-device_data= 'prime' ; 
+
 %load('datasets/07183.mat') % collected from MANUS in realtime
 load('datasets/07191.mat')
 
 %device_data= 'kinect' ;
-%load('datasets/kinectMultiViews.mat') 
-cc = 	33;
+%load('datasets/kinectMultiViews.mat')
+cc = 21;
 %load('dep07072.mat')
+device_data= 'prime' ;
 manus_initial_parameters
-P.mode = 'manual' ;
+P.mode = 'auto' ;
 
 %%  Run algorithm
-tic
+
 algorithm_part1
-toc
 manus_pcl_process
 draw_disc_curv(Line_new,Ic,'Labeled line',33)
 if strcmp(P.mode,'manual')
@@ -41,7 +39,6 @@ if strcmp(P.mode,'manual')
     end
     clean_vars
 elseif strcmp(P.mode,'auto')
-    filtered_pairs = [];
     for x0=1:size(ListPair,1)
         try
             pair_no = x0 ;
@@ -49,24 +46,50 @@ elseif strcmp(P.mode,'auto')
             algorithm_part3h1
             if f_success
                 algorithm_part3h2
-                auto_pair_selection
             end
         catch
-            %display(sprintf ('There was an error in computations of pair %d',pair_no))
+            display(sprintf ('There was an error in computations of pair %d',pair_no))
+            feat_vec(x0,:) = [100 1 1 1 1 1 1 1] ; 
+            feat_vecN(x0,:) = [100 1 1 1 1] ;
         end
         clean_vars
-        %pause(0.5)
     end
-    filtered_pairs
-    draw_pairs_v2(ListPair,Line_new,Ic,40) % paired lines
-    %pause(1)
-    draw_pairs_v2(ListPair(filtered_pairs,:),Line_new,Ic,41) % filtered paired lines
+    auto_pair_selection
+    draw_pairs_v2(ListPair,Line_new,Ic,1)
+    draw_pairs_v2(ListPair(sorted_pairs(1),:),Line_new,Ic,41) % filtered paired lines
+
 end
+
+% s1 = sprintf('runData0720_%d_Gradient.jpg',cc) ;
+% s2 = sprintf('runData0720_%d_Marked.jpg',cc) ;
+% s3 = sprintf('runData0720_%d_Depth.jpg',cc) ;
+% cc
+% figure(1) ; imshow(L22)
+%saveas(gcf,s1)
+%saveas(gcf,s2)
+%figure(3) ; imshow(L00);
+%saveas(gcf,s3)
+%pause(0.5)
+%close all
+%clearvars('-except','cc','img','avgdepM','pos')
+
 
 %%
 
-figure;imshow(L00)
-figure;imshow(L22)
+
+%s1 = sprintf('img%d-1.jpg',cc) ;
+%s2 = sprintf('img%d-2.jpg',cc) ;
+%s3 = sprintf('img%d-3.jpg',cc) ;
+
+
+% figure;imshow(Ic)
+%saveas(gcf,s1)
+%figure;imshow(L22)
+%saveas(gcf,s2)
+%draw_LogicalOnImage(BW30,Ic,'curve disc - BW30',3)
+%saveas(gcf,s3)
+
+
 %pair_no = point2pair(ListPair,Line_new,xypos,P);
 
 %% Description

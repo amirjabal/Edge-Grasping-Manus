@@ -1,16 +1,24 @@
-% based on the following features, filters the pairs
 
-error_ransac = error_plane/size(set_points,1)*100 ; 
-flag1 = flag_orientation ; 
-d_pair = dis_L1L2_3d ; % unit: meter / distance of the mean point of the second line from the first line
-n1 = size(set_points,1) ; % number of inlier points in ransac plane
-n2 = size(set_points2,1) ; % number of points for fitting the first line
-n3 = size(set_points3,1) ; % number of points for fitting the second line
 
-feat_vec(x0,:) = [error_ransac n1 n2 n3 d_pair] ;
-if (error_ransac<0.1) && (n1>50) && (n2>5) && (n3>5) && (d_pair>0.02) && (d_pair<0.07) && (strcmp(flag1,'side'))
-    display(sprintf('pair number %d passed', pair_no))
-    filtered_pairs = [filtered_pairs , pair_no] ;
-else
-    display(sprintf('pair number %d is dropped', pair_no))
+%%
+
+%feat_vec(x0,:) = [error_ransac dis_L1L2_3d  Line1_3dLength*100  Line1_nPixel  Line2_3dLength*100  Line2_nPixel  theta20 theta30] ;
+%feat_vecN(x0,:) = [error_ransac/0.15  Line1_3dLength*100/Line1_nPixel  Line2_3dLength*100/Line2_nPixel...
+%    abs(theta20-90)/180 min(theta30,180-theta30)/180]; % normalized version **last element (theta30 needs be normalized better!!)
+
+weight_vec = [2 1 1 0.5 0.5] ;
+error_pair = feat_vecN*weight_vec';
+
+
+x0 = size(ListPair,1);
+for i=1:x0 ;
+if ((feat_vec(i,1) > P.max_error_ransac) || (feat_vec(i,2) > P.max_distance_3d) ||  (feat_vec(i,3)>P.max_L3d) || (feat_vec(i,5)>P.max_L3d))
+    error_pair(i) = nan ;
 end
+
+end
+
+error_pair = error_pair/sum(weight_vec);
+
+[~,sorted_pairs] = sort(error_pair) ; 
+sorted_pairs

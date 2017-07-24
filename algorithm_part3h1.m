@@ -32,6 +32,9 @@ if ~f_success
         display('After reducing the ransac threshold parameter (0.8 to 0.7), a plane is fitted')
     else
         display('There is not a proper plane even after reducing threshold')
+        error_plane = 100 ; 
     end
 end
+
+error_ransac = error_plane/size(set_points,1)*100 ; 
 clear cntr

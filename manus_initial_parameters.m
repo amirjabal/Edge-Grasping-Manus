@@ -21,7 +21,17 @@ Ic = img{cc}; %changed ****
 % edge detection and line segmenting process
 P.lld = 300 ; P.hhd = 1000; %bounds for removing data %default 50 1800
 P.thresh_dis  = 0.07 ; % defualt 0.03
-P.thresh_curve  = 0.20 ; % defualt 0.25
+
+
+P.thresh_curve  = 0.25 ; % defualt 0.25
+P.sizeGFilter = 5 ;  % ** 5
+P.flag_ManualGradModif = true ; 
+P.thresh_ManuaGradModif = 2 ;
+P.thresh_curve_mirror = 0.45 ; % ** 0.55
+P.filter_Id = true ; 
+P.flag_GdirMirror = true ; 
+P.filter_gd = true ;
+
 P.zone  = [50 430 50 590] ;
 P.bound = 0 ;
 P.tol_edge = 3 ;
@@ -32,7 +42,7 @@ P.thresh_label_dis = 0.040; % default: 0.04 /threshold for percentage of marked 
 P.lsize = 11 ; % size of window for do the depth_modify process
 P.thresh_m = 22 ; % parameter for merging lines % angle_thresh default: 10
 
-P.filter_gd = true ;
+
 
 % pair matching
 P.Cons_Dmax = 100 ;  % defualt (July 12 2016): 40 or 50
@@ -40,9 +50,13 @@ P.Cons_Dmin = 10  ; % dmax = default : 40
 P.Cons_Lmin = 20; % default = 12
 P.Cons_AlphaD = 25 ; % defualt (July 12 2016): 20 or 30
 %P.d_thin = 0.001 ; % maximum distance between the pairs to consider as a thin object (unit:meter)
-
 P.d_thin3 = 0.001;
 P.d_thin2 = 10 ;
+
+
+P.max_L3d = 20 ; % maximum length for a line (cm)
+P.max_distance_3d = 8 ; % unit is cm / used in auto pair selection
+P.max_error_ransac = 0.15 ; % used in auto pair selection
 
 
 % shifting disc lines parameters

@@ -34,8 +34,8 @@ Gdir2(index3) = abs(Gdir(index3));
 [BW42,~] = edge(Gdir2,'canny',0.55);
 L31= label2rgb(fix(180+Gdir));
 L32= label2rgb(fix(90+Gdir1));
-L33= label2rgb(fix(360+Gdir2));
-figure;imshow(L31)
+L33= label2rgb(fix(Gdir2));
+%figure;imshow(L31)
 figure;imshow(L32)
 figure;imshow(L33)
 
@@ -44,4 +44,6 @@ BW43 = or(BW41,BW42) ;
 
 figure;imshow(BW30);title('Gdir')
 figure;imshow(BW43);title('Gdir new')
+
+
 

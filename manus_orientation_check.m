@@ -29,6 +29,4 @@ vec_x_b = [1 ; 0 ; 0] ; % base x axis (points forward)
 theta30 = acosd(dot(n_best,vec_x_b)/(norm(n_best)*norm(vec_x_b))) ; 
 
 
-%theta10
-%theta20
-%flag_orientaion
+
