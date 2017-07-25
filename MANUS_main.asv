@@ -59,8 +59,22 @@ elseif strcmp(P.mode,'auto')
     draw_pairs_v2(ListPair(sorted_pairs(1),:),Line_new,Ic,41) % filtered paired lines
 
 end
+%%
 
+pair_no = sorted_pairs(1);
 
+algorithm_part2
+algorithm_part3h1
+if f_success
+    algorithm_part3h2
+    % Drawing the point clouds
+    if P.fig_pcl
+        DrawSelectedPoints(TargetPoints, TargetPoints_noshift,10,Ic,'Selected Points')
+        drawPclMarkedPts(Cloud_B2, set_points, original_points, 20, 'PCL - Before and After Shifting',P)
+        draw_pcl_Xaxis(Cloud_B2, LL1, LL2, 21, 'Fit Lines') % draw fit lines on the PCL
+        draw_pcl(Cloud_B2, P_centerRAN, p_best, n_best, ro_best, Dir_vecRAN, 22, 'RANSAC-Point Cloud',P)
+    end
+end
 
 % s1 = sprintf('runData0720_%d_Gradient.jpg',cc) ;
 % s2 = sprintf('runData0720_%d_Marked.jpg',cc) ;

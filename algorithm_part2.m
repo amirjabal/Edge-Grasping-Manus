@@ -6,6 +6,9 @@ if ~P.shift_all
     
     % return a 2d mask for tracking purposes
     maskroi = line2region (Ic,Line_new(SelectedLines(1),:),Line_new(SelectedLines(2),:)) ;
+%     maskroi = line2region_point (Ic,Line_new(SelectedLines(1),:),Line_new(SelectedLines(2),:)) ;
+    
+    
     
     %% *******SECTION 1*******
     
