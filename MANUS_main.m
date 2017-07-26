@@ -7,11 +7,13 @@ N = 33;
 
 
 %load('datasets/07183.mat') % collected from MANUS in realtime
-load('datasets/07191.mat')
+%load('H:/2017 Research/Manus Datasets codes/datasets/07191.mat')
+
+load('H:/2017 Research/Manus Datasets codes/datasets/0725_combined.mat')
 
 %device_data= 'kinect' ;
 %load('datasets/kinectMultiViews.mat')
-cc = 21;
+cc =10;
 %load('dep07072.mat')
 device_data= 'prime' ;
 manus_initial_parameters
@@ -21,7 +23,6 @@ P.mode = 'auto' ;
 
 algorithm_part1
 manus_pcl_process
-draw_disc_curv(Line_new,Ic,'Labeled line',33)
 if strcmp(P.mode,'manual')
     draw_pairs_v2(ListPair,Line_new,Ic,1) % paired lines
     pair_no  = user_selection(ListPair,Line_new,ListPoint_new, Id,P) ;
@@ -50,15 +51,18 @@ elseif strcmp(P.mode,'auto')
         catch
             display(sprintf ('There was an error in computations of pair %d',pair_no))
             feat_vec(x0,:) = [100 1 1 1 1 1 1 1] ; 
-            feat_vecN(x0,:) = [100 1 1 1 1] ;
+            feat_vecN(x0,:) = [100 1 1 1 1 1] ;
         end
         clean_vars
     end
     auto_pair_selection
     draw_pairs_v2(ListPair,Line_new,Ic,1)
     draw_pairs_v2(ListPair(sorted_pairs(1),:),Line_new,Ic,41) % filtered paired lines
-
 end
+
+
+
+
 
 % s1 = sprintf('runData0720_%d_Gradient.jpg',cc) ;
 % s2 = sprintf('runData0720_%d_Marked.jpg',cc) ;

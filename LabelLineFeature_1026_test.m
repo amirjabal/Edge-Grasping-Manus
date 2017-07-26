@@ -1,5 +1,5 @@
 
-function [Line_new] = LabelLineFeature_1026(Id,BW20,Line_new,P)
+function [Line_new] = LabelLineFeature_1026_test(Id,BW20,Line_new,P)
 
 
 %description : label lines: disc. or curv.
@@ -11,6 +11,7 @@ Line_new(:,11) = 0 ; % a feature to show disc+/disc-/curv
 Line_new(:,12) = 0 ; % a feature to show vertical/horizontal
 
 for cc=1:size(Line_new,1) ;
+   
     uL = Line_new(cc,:) ;
     if uL(5) > P.Cons_Lmin ;
         p1 = [uL(1) ; uL(2)] ;
@@ -89,5 +90,6 @@ for cc=1:size(Line_new,1) ;
         
     end
 end
+
 end
 

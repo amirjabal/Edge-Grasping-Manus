@@ -2,16 +2,26 @@
 %% load data
 
 xypos = [148 340];
-%cc = 	1;
+
+
+% for data 0725
+Id_o = data_cell{cc,1} ; 
+Ic = data_cell{cc,2} ; 
+pos = data_cell{cc,3} ; 
+
+cc=1 ;
+
+
+% for data 0719
+%Id_o = avgdepM{cc};
+%Ic = img{cc};
+
 
 %Id_o = dep_withmask{cc};  %changed ***
-Id_o = avgdepM{cc};
 %Id_o = avgd{cc};
-
-Ic = img{cc}; %changed ****
 %Ic = clr{cc} ;
 
-
+ % for data kinect
 %Id_o = K2D_view1{cc,1};
 %Ic_test =K2D_view1{cc,1} ;
 %Ic = label2rgb(fix(Ic_test));
@@ -20,7 +30,7 @@ Ic = img{cc}; %changed ****
 
 % edge detection and line segmenting process
 P.lld = 300 ; P.hhd = 1000; %bounds for removing data %default 50 1800
-P.thresh_dis  = 0.07 ; % defualt 0.03
+P.thresh_dis  = 0.05 ; % defualt 0.07
 
 
 P.thresh_curve  = 0.25 ; % defualt 0.25

@@ -133,5 +133,5 @@ if strcmp(P.mode,'manual')
 end
 feat_vec(x0,:) = [error_ransac dis_L1L2_3d*100 Line1_3dLength*100  Line1_nPixel  Line2_3dLength*100  Line2_nPixel  theta20 theta30] ; 
 feat_vecN(x0,:) = [error_ransac/0.15  Line1_3dLength*100/Line1_nPixel  Line2_3dLength*100/Line2_nPixel...
-                    abs(theta20-90)/180 min(theta30,180-theta30)/180]; % normalized version
+                    abs(theta20-90)/180 min(theta30,180-theta30)/180 max(Line1_3dLength,Line2_3dLength)/min(Line1_3dLength,Line2_3dLength)/10 ]; % normalized version
 
