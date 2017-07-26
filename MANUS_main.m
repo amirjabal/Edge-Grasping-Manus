@@ -1,5 +1,5 @@
 %
-clc ; clear ; close all
+clc ;  close all ;clear
 % load('datasets/Primesense_0713_10pics.mat')
 
 N = 33;
@@ -9,11 +9,11 @@ N = 33;
 %load('datasets/07183.mat') % collected from MANUS in realtime
 %load('H:/2017 Research/Manus Datasets codes/datasets/07191.mat')
 
-load('H:/2017 Research/Manus Datasets codes/datasets/0725_combined.mat')
+load('H:/2017 Research/Manus Datasets codes/datasets/0726_combined.mat')
 
 %device_data= 'kinect' ;
 %load('datasets/kinectMultiViews.mat')
-cc =10;
+cc =1;
 %load('dep07072.mat')
 device_data= 'prime' ;
 manus_initial_parameters

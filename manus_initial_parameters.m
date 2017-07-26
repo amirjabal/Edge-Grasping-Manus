@@ -36,14 +36,14 @@ P.thresh_dis  = 0.05 ; % defualt 0.07
 P.thresh_curve  = 0.25 ; % defualt 0.25
 P.sizeGFilter = 5 ;  % ** 5
 P.flag_ManualGradModif = true ; 
-P.thresh_ManuaGradModif = 2 ;
+P.thresh_ManuaGradModif = 2 ; % default: 2
 P.thresh_curve_mirror = 0.45 ; % ** 0.55
 P.filter_Id = true ; 
 P.flag_GdirMirror = true ; 
 P.filter_gd = true ;
 
 P.zone  = [50 430 50 590] ;
-P.bound = 0 ;
+P.bound = 5 ;
 P.tol_edge = 3 ;
 P.tol_line = 7 ; %default was 3
 P.label_win_size = 11 ; % half of window length % default : 3

@@ -2,7 +2,7 @@ close all
 %%%
 
 
-cc = 29 ;
+cc = 22 ;
 Id_o = avgdepM{cc};
 
 %% *******SECTION 1*******

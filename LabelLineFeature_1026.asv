@@ -10,7 +10,8 @@ function [Line_new] = LabelLineFeature_1026(Id,BW20,Line_new,P)
 Line_new(:,11) = 0 ; % a feature to show disc+/disc-/curv
 Line_new(:,12) = 0 ; % a feature to show vertical/horizontal
 
-for cc=1:size(Line_new,1) ;
+%for cc=1:size(Line_new,1) ;
+for cc=35
     uL = Line_new(cc,:) ;
     if uL(5) > P.Cons_Lmin ;
         p1 = [uL(1) ; uL(2)] ;
@@ -41,7 +42,7 @@ for cc=1:size(Line_new,1) ;
                 winn = [p1     p2 ptd4 ptd2] ;
                 winp = [ptd1 ptd3 p2     p1] ;
             end
-            
+                  
             
         else % i guess this case never happens here in this code
             display ('check LabelLineFeature_1026! A bug happend!')
@@ -77,18 +78,20 @@ for cc=1:size(Line_new,1) ;
             % values in the mask is higher than a threshold, assume object
             % is on the opposite direction
             if ((length(depth_pos)/length(edp))<0.7) && ((length(depth_neg)/length(edn))<0.7) % if both have zeros
-                [~, idxx1] = max([(length(depth_pos)/length(edp)) ; (length(depth_neg)/length(edn))]) ;
-                switch idxx1
-                    case 1
-                        Line_new(cc,11)= 10 ;  %
-                    case 2
-                        Line_new(cc,11)= 9 ;
-                end
+                
+                
+            [~, idxx1] = max([(length(depth_pos)/length(edp)) ; (length(depth_neg)/length(edn))]) ;          
+            switch idxx1
+                case 1
+                    Line_new(cc,11)= 9 ;  % foreground set       
+                case 2
+                    Line_new(cc,11)= 9 ;  
+            end  
             elseif (length(depth_pos)/length(edp))<0.7
                 Line_new(cc,11)= 9 ;  % object is on the negetive side of the line bc pos side is shadows
             elseif(length(depth_neg)/length(edn))<0.7
                 Line_new(cc,11)= 10 ;  % object is on the positive side of the line bc neg side is shadows
-            end
+            end   
         else
             Line_new(cc,11)= 13 ; % it is curvature
         end
