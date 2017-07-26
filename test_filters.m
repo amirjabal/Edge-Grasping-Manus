@@ -2,7 +2,7 @@ close all
 %%%
 
 
-cc = 22 ;
+cc = 2 ;
 Id_o = avgdepM{cc};
 
 %% *******SECTION 1*******
@@ -117,26 +117,26 @@ Ig =rgb2gray(L00) ;
 im1 = zeros(size(Id)) ;
 im1(Id==0)=1 ;
 
-mask_sh_ed2 =  bwmorph(im1,'thicken',2);
-var_test1 = and(~mask_sh_ed2,BW20) ; 
-var_test1_morpho  = morpho_modify_0712(var_test1) ;
-BW_disc = or(var_test1,BW_forg) ;
+mask_sh_ed =  bwmorph(im1,'thicken',2); % mask of shadows+ their boundaries
+BW_discXSh = and(~mask_sh_ed,BW20) ;  % mask of disc excluding shadows
+BW_discXShMorpho  = morpho_modify_0712(BW_discXSh) ;
+BW_disc_fSh = or(BW_discXSh,BW_forg) ;
 
 mask_sh_ed5 =  bwmorph(im1,'thicken',5);
-var_test5 = and(~mask_sh_ed5,BW30) ; 
-var_test5_morpho  = morpho_modify_0712(var_test5) ;
+BW_curvXSh = and(~mask_sh_ed5,BW30) ; % mask of curve excluding shadows
+BW_curveXShMorpho  = morpho_modify_0712(BW_curvXSh) ;
 
 
 draw_LogicalOnImage(BW20,Ig,'BW20',11)
 draw_LogicalOnImage(BW30,Ig,'BW30',12)
 
-draw_LogicalOnImage(var_test1,Ig,'filtered disc',13)
-draw_LogicalOnImage(var_test5,Ig,'filtered cruve',15)
+draw_LogicalOnImage(BW_discXSh,Ig,'filtered disc',13)
+draw_LogicalOnImage(BW_curvXSh,Ig,'filtered cruve',15)
 draw_LogicalOnImage(BW_forg,Ig,'BWforg',17)
 
-draw_LogicalOnImage(var_test1_morpho,Ig,'filtered disc morpho',14)
-draw_LogicalOnImage(var_test5_morpho,Ig,'filtered curve morpho',16)
-draw_LogicalOnImage(BW_disc,Ig,'disc final',18)
+draw_LogicalOnImage(BW_discXShMorpho,Ig,'filtered disc morpho',14)
+draw_LogicalOnImage(BW_curveXShMorpho,Ig,'filtered curve morpho',16)
+draw_LogicalOnImage(BW_disc_fSh,Ig,'disc final',18)
 
 
 

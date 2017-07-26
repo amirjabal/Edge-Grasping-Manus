@@ -5,16 +5,15 @@ xypos = [148 340];
 
 
 % for data 0725
-Id_o = data_cell{cc,1} ; 
-Ic = data_cell{cc,2} ; 
-pos = data_cell{cc,3} ; 
-
-cc=1 ;
+% Id_o = data_cell{cc,1} ; 
+% Ic = data_cell{cc,2} ; 
+% pos = data_cell{cc,3} ; 
+% cc=1 ;
 
 
 % for data 0719
-%Id_o = avgdepM{cc};
-%Ic = img{cc};
+Id_o = avgdepM{cc};
+Ic = img{cc};
 
 
 %Id_o = dep_withmask{cc};  %changed ***
@@ -66,7 +65,7 @@ P.d_thin2 = 10 ;
 
 P.max_L3d = 20 ; % maximum length for a line (cm)
 P.max_distance_3d = 8 ; % unit is cm / used in auto pair selection
-P.max_error_ransac = 0.15 ; % used in auto pair selection
+P.max_error_ransac = 0.2 ; % used in auto pair selection
 
 
 % shifting disc lines parameters
