@@ -148,14 +148,24 @@ clear index f1
 
 %% for testing purposes
 % close all
-BW_thicken =  bwmorph(BW20,'thicken',2);
-BW_thicken_not = ~BW_thicken ; 
-BW30_new = and(BW_thicken_not,BW30) ; 
-draw_2LogicalOnImage(BW30,BW30_new,Ic,'old vs new',11)
+BW20_thicken =  bwmorph(BW20,'thicken',P.sizeGFilter);
+BW20_thicken_not = ~BW20_thicken ; 
+BW30_XDis = and(BW20_thicken_not,BW30) ; 
+
+
+draw_2LogicalOnImage(BW20,BW30_XDis,Ic,'disc/curve new',12)
+draw_2LogicalOnImage(BW20,BW30,Ic,'depth/curve old.',11)
+
+
+draw_2LogicalOnImage(BW30,BW30_XDis,Ic,'old vs new',11)
 draw_LogicalOnImage(BW20,Ic,'depth disc',12)
-DE10_new  = morpho_modify_0712(BW30_new) ;
+DE10_new  = morpho_modify_0712(BW30_XDis) ;
 draw_LogicalOnImage(DE10,Ic,'after morpho old',13)
 draw_LogicalOnImage(DE10_new,Ic,'after morpho new',14)
+draw_2LogicalOnImage(BW20_thicken,BW30,Ic,'depth/curve disc.',14)
+
+
+
 
 % figure;imshow(BW20)
 % figure;imshow(BW30)

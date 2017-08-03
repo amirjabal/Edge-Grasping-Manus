@@ -1,5 +1,5 @@
 %
-clc ;  close all ;clear
+clc ;clear 
 % load('datasets/Primesense_0713_10pics.mat')
 
 N = 33;
@@ -12,15 +12,21 @@ load('H:/2017 Research/Manus Datasets codes/datasets/07191.mat')
 
 %device_data= 'kinect' ;
 %load('datasets/kinectMultiViews.mat')
-cc =8;
+cc =1;
 %load('dep07072.mat')
 device_data= 'prime' ;
 manus_initial_parameters
-P.mode = 'auto' ;
+P.mode = 'manual' ;
 
 %%  Run algorithm
 
 algorithm_part1
+% draw_2LogicalOnImage(BW20,BW30,Ic,'depth/curve disc.',13)
+% Ig =rgb2gray(L00) ;
+% draw_LogicalOnImage(DE3,Ig,'DE3 cc8 new',19)
+% draw_disc_curv(Line_new,Ig,'Labeled line',33)
+
+
 manus_pcl_process
 if strcmp(P.mode,'manual')
     draw_pairs_v2(ListPair,Line_new,Ic,1) % paired lines
@@ -68,13 +74,13 @@ end
 % s3 = sprintf('runData0720_%d_Depth.jpg',cc) ;
 % cc
 % figure(1) ; imshow(L22)
-%saveas(gcf,s1)
-%saveas(gcf,s2)
-%figure(3) ; imshow(L00);
-%saveas(gcf,s3)
-%pause(0.5)
-%close all
-%clearvars('-except','cc','img','avgdepM','pos')
+% saveas(gcf,s1)
+% saveas(gcf,s2)
+% figure(3) ; imshow(L00);
+% saveas(gcf,s3)
+% pause(0.5)
+% close all
+% clearvars('-except','cc','img','avgdepM','pos')
 
 
 %%

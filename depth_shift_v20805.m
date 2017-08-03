@@ -48,6 +48,7 @@ for cnt=1:length(ff)
         if (dir<22.5)||(dir>157.5)
             mask_im(yc , xc-param:xc+param) = Gmag(yc , xc-param:xc+param) ;
             vec(:) = Id(yc , xc-param:xc+param) ;
+            
             % case 2 : load a +45 deg line
         elseif (22.5<dir)&&(dir<67.5)
             temp = Gmag(yc-param:yc+param , xc-param:xc+param) ;
@@ -80,12 +81,12 @@ for cnt=1:length(ff)
         if mh1>mh2  
             mask_im2(1:linc-1) = 0 ;
             mask_im2 = (1/(max(mask_im2(:))))*mask_im2 ;
-            mask_im2(mask_im2>thresh_mag) = 0.01 ; % previous value 0.05/ I changed to this new value because of some issues on 06/30/2016
+            mask_im2(mask_im2>thresh_mag) = 0.001 ; % previous value 0.05/ I changed to this new value because of some issues on 06/30/2016
             [~,ind] = max(mask_im2(:)) ;
         else
             mask_im2(linc-1:end) = 0 ;
             mask_im2 = (1/(max(mask_im2(:))))*mask_im2 ;
-            mask_im2(mask_im2>thresh_mag) = 0.01 ;  % previous value 0.05/ I changed to this new value because of some issues on 06/30/2016
+            mask_im2(mask_im2>thresh_mag) = 0.001 ;  % previous value 0.05/ I changed to this new value because of some issues on 06/30/2016
             [~,ind] = max(mask_im2(:)) ;
         end
         

@@ -10,10 +10,12 @@ xypos = [148 340];
 % pos = data_cell{cc,3} ; 
 % cc=1 ;
 
-
+load ('0803.mat')
 % for data 0719
 Id_o = avgdepM{cc};
 Ic = img{cc};
+
+
 
 
 %Id_o = dep_withmask{cc};  %changed ***
