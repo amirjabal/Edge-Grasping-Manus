@@ -24,8 +24,12 @@ for cc=1:length(ListSegLine)
         
         L = sqrt((x2-x1)^2+(y2-y1)^2);
         alpha = atand(-m) ;
-        
-        LineFeature(c0,:) = [y1 x1 y2 x2 L m alpha c0 lind1 lind2] ; % start point/end point/length/slope/angle/number/label
+        if (abs(y2-y1)>abs(x2-1))||(abs(y2-y1)==abs(x2-1))
+            dir = 1 ; % line is vertical
+        else
+            dir = 2 ;  % Line is horizontal
+        end
+        LineFeature(c0,:) = [y1 x1 y2 x2 L m alpha c0 lind1 lind2 0 dir] ; % start point/end point/length/slope/angle/number/label
         
         sty = find([ListEdge{cc}(:,1)]==y1) ;
         stx = find([ListEdge{cc}(:,2)]==x1) ; % find the star

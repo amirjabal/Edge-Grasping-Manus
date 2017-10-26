@@ -1,32 +1,9 @@
 
 %% load data
 
-xypos = [148 340];
+Load_Image_Win
 
 
-% for data 0725
-% Id_o = data_cell{cc,1} ; 
-% Ic = data_cell{cc,2} ; 
-% pos = data_cell{cc,3} ; 
-% cc=1 ;
-
-load ('0803.mat')
-% for data 0719
-Id_o = avgdepM{cc};
-Ic = img{cc};
-
-
-
-
-%Id_o = dep_withmask{cc};  %changed ***
-%Id_o = avgd{cc};
-%Ic = clr{cc} ;
-
- % for data kinect
-%Id_o = K2D_view1{cc,1};
-%Ic_test =K2D_view1{cc,1} ;
-%Ic = label2rgb(fix(Ic_test));
-%Ic2 = K2_view1{cc,1} ;
 %% LARGE OBJECTS PARAMETERS
 
 % edge detection and line segmenting process
@@ -89,24 +66,25 @@ P.fig_pcl = true ; % draw point cloud figure?
 P.pair_sel = false ; % select pair by the area
 P.shift_all = false ; % a flag to control shifting for all the lines or just the selected pair
 
+
+
 % CAMERA'S PARAMETERS
-P.Cons_Cam = 535;     % PRIME SENSE FOCAL LENGTH
-P.center = [ 317.8042  239.2228]; % PRIME SENSE CENTER POINT
-yaw = (pos(cc,4))/180*pi;
-pit = -(pos(cc,5))/180*pi;
-roll = (sign(pos(cc,6))*(180-abs(pos(cc,6))))/180*pi;
-camera_offset = [63,38,37];
-P.baseloc = (1*pos(cc,1:3)+[angle2dcm(yaw, pit,roll )'*camera_offset']')/1000;
-% [angle2dcm(yaw, pit,roll )'*camera_offset']' ;
-P.pos = pos(cc,:);
-P.rot = angle2dcm(yaw, pit,roll );%
-P.rot2 = eye(3);
-pos(cc,:);
-P.flag_tran = 1;
-
-
-if strcmp(device_data, 'kinect')
-    P.zone  = [50 420 50 490] ;
+if strcmp(device_data, 'prime')
+    P.Cons_Cam = 535;     % PRIME SENSE FOCAL LENGTH
+    P.center = [ 317.8042  239.2228]; % PRIME SENSE CENTER POINT
+    yaw = (pos(cc,4))/180*pi;
+    pit = -(pos(cc,5))/180*pi;
+    roll = (sign(pos(cc,6))*(180-abs(pos(cc,6))))/180*pi;
+    camera_offset = [63,38,37];
+    P.baseloc = (1*pos(cc,1:3)+[angle2dcm(yaw, pit,roll )'*camera_offset']')/1000;
+    % [angle2dcm(yaw, pit,roll )'*camera_offset']' ;
+    P.pos = pos(cc,:);
+    P.rot = angle2dcm(yaw, pit,roll );%
+    P.rot2 = eye(3);
+    pos(cc,:);
+    P.flag_tran = 1;
+elseif strcmp(device_data, 'kinect')
+    P.zone  = [50 450 50 490] ;
 end
 
     

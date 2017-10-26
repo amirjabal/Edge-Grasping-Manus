@@ -1,9 +1,9 @@
-clc ; clear all ; close all
-load('H:/2017 Research/Manus Datasets codes/datasets/07191.mat')
-for cc = 2
+% clc ; clear all ; close all
+% load('H:/2017 Research/Manus Datasets codes/datasets/07191.mat')
+for cc = 1
     
-    device_data= 'prime';
-    manus_initial_parameters
+%     device_data= 'prime';
+%     manus_initial_parameters
     
     im1 = zeros(size(Id_o)) ;
     im1(Id_o==0)=1 ;
@@ -20,8 +20,8 @@ for cc = 2
     Ig = rgb2gray(L00);
     figure; imshow(Ig) ; hold on
     tic
-    %for cntr=1:length(label_val)
-    for cntr=36:36
+    for cntr=1:length(label_val)
+    %for cntr=36:36
         tt1 = find(im2==label_val(cntr));
         if length(tt1)>20 && length(tt1)<5000
             im3 = zeros(size(im2)) ; im3(im2==label_val(cntr)) = 1;

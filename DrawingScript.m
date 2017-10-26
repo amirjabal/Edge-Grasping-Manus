@@ -23,7 +23,7 @@ draw_disc_curv(Line_new,Ic,'Labeled line',33)
 
 
 %% sec 4
-draw_pairs(ListPair,Line_new,Ic,40) % paired lines
+draw_pairs_v2(ListPair,Line_new,Ic,40) % paired lines
 draw_pair_seperate     % not movie
 %draw_pair_seperate_0617 % + a movie
 
