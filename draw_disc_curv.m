@@ -13,6 +13,8 @@ for ii=1:length(Line_new)
             cc = 'b' ;
         elseif(Line_new(ii,11)==13)
             cc = 'g' ;
+        elseif(Line_new(ii,11)==12)
+            cc = 'k' ;
         end
         y1 = Line_new(ii,1) ;
         x1 = Line_new(ii,2) ;

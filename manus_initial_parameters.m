@@ -4,6 +4,14 @@
 Load_Image_Win
 
 
+%  Id_o = imread('Image0001.png');
+%  Id_o = double(Id_o) ; 
+%  Ic = label2rgb(Id_o);
+Id_background = Id_o;
+%load ('1116.mat')
+
+
+
 %% LARGE OBJECTS PARAMETERS
 
 % edge detection and line segmenting process
@@ -85,6 +93,13 @@ if strcmp(device_data, 'prime')
     P.flag_tran = 1;
 elseif strcmp(device_data, 'kinect')
     P.zone  = [50 450 50 490] ;
+    %P.zone = [40,320,10,420] ;
+    P.Cons_Cam = 535;    
+    P.center = [ 317.8042  239.2228];
+    
+    P.rot = eye(3);
+    P.rot2 = eye(3);
+    P.baseloc = [0 0 0];
 end
 
     

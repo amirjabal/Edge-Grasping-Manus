@@ -1,3 +1,14 @@
+
+
+
+clc ;clear ; close all
+imgnum = 10 ; 
+device_data= 'kinect' ;
+manus_initial_parameters
+P.mode = 'manual' ;
+
+%%  Run algorithm
+
 %% *******SECTION 1*******
 
 %% REMOVE OUT OF ZONE DATA, FILL THE ZEROS, FILTER OUT OF RANGE DATA
@@ -94,74 +105,65 @@ BW30 = remove_boundries(BW30, P.zone , P.bound) ;
 
 %% *******SECTION 2*******
 
-% SEGMENT AND LABEL THE CURVATURE LINES (CONVEX/CONCAVE)
-DE10  = morpho_modify_0712(BW30) ;
-[ListEdgeC, ~,~ ] = edgelink(DE10, P.tol_edge); %
-ListSegLineC = lineseg(ListEdgeC, P.tol_line); %
-[LineFeatureC,ListPointC] = Lseg_to_Lfeat_v2(ListSegLineC,ListEdgeC,size(Id)) ; %LineFeature(c0,:) = [y1 x1 y2 x2 L m alpha c0 lind1 lind2]
-[Line_newC,ListPoint_newC,Line_merged_nC] = merge_lines_1101(LineFeatureC,ListPointC,P.thresh_m, size(Id)) ; % merge broken lines
-[Line_newC] = LabelLineCurveFeature_v3(Id,Line_newC,ListPoint_newC,P) ; % label the lines (/max/min)
-
-
-% DROP THE CONVEX LINES AND MAKE A NEW LOGICAL IMAGE
-ind1 = find(Line_newC(:,11)==13) ;
-ptn = [] ;
-for mt=1:length(ind1)
-    ptn = [ptn ; ListPoint_newC{ind1(mt)}(:)] ;
-end
-BWn = false(size(Id)) ;
-BWn(ptn) = true ;
 
 % APPLY OR OPERATION TO THE PROCESSED LOGICAL IMAGES FROM DISC. AND CURV.
-DE_o = or(BWn,BW20) ;
+DE_o = or(BW30,BW20) ;
 DE3  = morpho_modify_0712(DE_o) ;
 
 clear ListEdgeC ListSegLineC LineFeatureC ListPointC Line_newC ListPoint_newC Line_merged_nC
 clear mt ind1 ptn
 
-%% *******SECTION 3*******
 
-% SEGMENT AND LABEL THE COMBINED IMAGE (DISC./CURV.)
-[ListEdge,~, ~ ] = edgelink(DE3, P.tol_edge); %
-ListSegLine = lineseg(ListEdge, P.tol_line); %
-[LineFeature,ListPoint] = Lseg_to_Lfeat_v2(ListSegLine,ListEdge,size(Id)) ; %LineFeature(c0,:) = [y1 x1 y2 x2 L m alpha c0 lind1 lind2]
+BW90 = or(BW20,BW30);
+BW91  = morpho_modify_0712(BW90) ;
+[SB,SL,SN,SA] = bwboundaries(BW91);
 
-% OLD SETUP FOR MERGING : 
-% merging the lines if satisfyin easy condition (same 2d slope)
-% [Line_new,ListPoint_new,Line_merged_n] = merge_lines_1101(LineFeature,ListPoint,P.thresh_m, size(Id)) ; % merge broken lines
-% DE1  = morpho_modify_0712(BW20) ;
-% [Line_new] = LabelLineFeature_1026(Id,DE1,Line_new,P) ; % label the lines (dis/curv)
+%% 
+
+stats = regionprops(SL,'Area');
+
+%for n=1:height(stats)
+    for n=1:22
+    if stats.Area(n)>500
 
 
-% NEW SETUP FOR MERGING :
-% merging the lines if satisfying hard conditions (same 3d orientation)
-DE1  = morpho_modify_0712(BW20) ;
-[BW20_back,~] = edge(Id_background,'canny',P.thresh_dis);
-DE1_back  = morpho_modify_0712(BW20_back) ;
-[LineFeature] = LabelLine_EdgeType(Id_background,DE1_back,LineFeature,P,ListPoint) ; % label the lines (disc/curv)
-[Line_new,ListPoint_new,Line_merged_n] = mergeLines_hardCond(LineFeature,ListPoint,Id, Gdir,BW20 , P) ;
-
-clear ListEdge ListSegLine DE1
-
-%% *******SECTION 4*******
-
-% SELECT THE DESIRED LINES FROM THE LIST
-f1 = find(Line_new(:,11)~=0) ;
-LineInteresting = Line_new(f1,:) ;
-
-% Use these lines to consider CD and DD
-% g1 = find(Line_new(:,11)==9) ; 
-% g2 = find(Line_new(:,11)==10) ; 
-% g3 = find(Line_new(:,11)==13);
-% gtot = [g1;g2;g3] ;
-% LineInteresting = Line_new(gtot,:) ;
+        
+        indLabel = find(SL==n ) ;
+        intrestRegion3D = zeros(size(indLabel,1),3);
+        intrestRegion3D(:,1) = pcloudL1(indLabel) ; intrestRegion3D(:,2) = pcloudL2(indLabel) ; intrestRegion3D(:,3) = pcloudL3(indLabel) ;
+        [coeff,~,latent] = pca(intrestRegion3D) ;
+        pca_vec(n,:)=coeff(3,:) ;
+        
+        % acosd(dot(pca_vec(41,:),pca_vec(34,:)))
+        figure;imagesc(Id_o);
+        % h2=impoly;
+        % BW2=createMask(h2);
+        
+    end
+end
 
 
 
-[~ ,index]  = sort(LineInteresting(:,7)) ;
-LineInteresting = LineInteresting(index,:)   ;
 
-% MATCH THE LINES TO GET THE PAIRS
-ListPair = line_match_1026(LineInteresting,P) ;
 
-clear index f1
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,3 +1,5 @@
+
+
 %% *******SECTION 1*******
 
 %% REMOVE OUT OF ZONE DATA, FILL THE ZEROS, FILTER OUT OF RANGE DATA
@@ -15,6 +17,9 @@ end
 Id3 = zeros(size(Id_o)) ; Id3(P.zone(1):P.zone(2) , P.zone(3):P.zone(4)) = Id2 ;
 Id3(Id3<P.lld)= 0 ; Id3(Id3>P.hhd)= 0 ; Id = Id3 ;
 
+Id(410:480,1:215) = 0;%% for the view gripper blocked 
+
+
 L00 = label2rgb(fix(Id_o));
 L11 = label2rgb(fix(Id));
 
@@ -22,6 +27,9 @@ clear  Id1 Id2 Id3
 %% FIND DEPTH DICOUNTINUTIES
 [BW20,~] = edge(Id,'canny',P.thresh_dis);
 BW20 = remove_boundries(BW20, P.zone , P.bound) ;
+
+% [BW20_back,~] = edge(Id_background,'canny',P.thresh_dis);%% 
+% DE1_back  = morpho_modify_0712(BW20_back) ;
 
 %% Filtering and taking Gradient for Curvature discountinuity
 if P.filter_Id
@@ -43,6 +51,7 @@ end
 % Manually modifying Gdir for the elements which both Gx and Gy have small variations
 % Purpose: removing the noise which appears in Gdir by Gx Gy sign flipping (Specially in front-view images)
 if P.flag_ManualGradModif
+    Gdir0 = Gdir;
     Gxm = Gx;
     Gym = Gy;
     indx11 = find(abs(Gxm)<P.thresh_ManuaGradModif);
@@ -121,43 +130,44 @@ clear mt ind1 ptn
 
 %% *******SECTION 3*******
 
+if (~P.merge_correction)
+% SEGMENT AND LABEL THE COMBINED IMAGE (DISC./CURV.)
+[ListEdge,~, ~ ] = edgelink(DE3, P.tol_edge); %
+ListSegLine = lineseg(ListEdge, P.tol_line); %
+[LineFeature,ListPoint] = Lseg_to_Lfeat_v2_0(ListSegLine,ListEdge,size(Id)) ; %LineFeature(c0,:) = [y1 x1 y2 x2 L m alpha c0 lind1 lind2]
+[Line_new,ListPoint_new,Line_merged_n] = merge_lines_1101_0(LineFeature,ListPoint,P.thresh_m, size(Id)) ; % merge broken lines
+DE1  = morpho_modify_0712(BW20) ;
+[Line_new] = LabelLineFeature_1026_old(Id,DE1,Line_new,P) ; % label the lines (dis/curv)
+% [Line_new] = LabelLineFeature_1026(Id_background, DE1_back, Line_new, P, ListPoint_new) ;  % label the lines (dis/curv)
+            
+clear ListEdge ListSegLine DE1
+
+
+%% *******SECTION 3*******
+else
 % SEGMENT AND LABEL THE COMBINED IMAGE (DISC./CURV.)
 [ListEdge,~, ~ ] = edgelink(DE3, P.tol_edge); %
 ListSegLine = lineseg(ListEdge, P.tol_line); %
 [LineFeature,ListPoint] = Lseg_to_Lfeat_v2(ListSegLine,ListEdge,size(Id)) ; %LineFeature(c0,:) = [y1 x1 y2 x2 L m alpha c0 lind1 lind2]
-
-% OLD SETUP FOR MERGING : 
-% merging the lines if satisfyin easy condition (same 2d slope)
-% [Line_new,ListPoint_new,Line_merged_n] = merge_lines_1101(LineFeature,ListPoint,P.thresh_m, size(Id)) ; % merge broken lines
-% DE1  = morpho_modify_0712(BW20) ;
-% [Line_new] = LabelLineFeature_1026(Id,DE1,Line_new,P) ; % label the lines (dis/curv)
-
-
-% NEW SETUP FOR MERGING :
-% merging the lines if satisfying hard conditions (same 3d orientation)
 DE1  = morpho_modify_0712(BW20) ;
-[BW20_back,~] = edge(Id_background,'canny',P.thresh_dis);
+
+[BW20_back,~] = edge(Id_background,'canny',0.04);
 DE1_back  = morpho_modify_0712(BW20_back) ;
+
 [LineFeature] = LabelLine_EdgeType(Id_background,DE1_back,LineFeature,P,ListPoint) ; % label the lines (disc/curv)
 [Line_new,ListPoint_new,Line_merged_n] = mergeLines_hardCond(LineFeature,ListPoint,Id, Gdir,BW20 , P) ;
 
 clear ListEdge ListSegLine DE1
-
+end
 %% *******SECTION 4*******
 
-% SELECT THE DESIRED LINES FROM THE LIST
-f1 = find(Line_new(:,11)~=0) ;
-LineInteresting = Line_new(f1,:) ;
-
-% Use these lines to consider CD and DD
-% g1 = find(Line_new(:,11)==9) ; 
-% g2 = find(Line_new(:,11)==10) ; 
-% g3 = find(Line_new(:,11)==13);
-% gtot = [g1;g2;g3] ;
-% LineInteresting = Line_new(gtot,:) ;
-
-
-
+% SELECT THE DISIRED LINES FROM THE LIST
+g1 = find(Line_new(:,11)==9) ; 
+g2 = find(Line_new(:,11)==10) ; 
+g3 = find(Line_new(:,11)==13);
+gtot = [g1;g2;g3] ;
+% gtot = sort(gtot) ;
+LineInteresting = Line_new(gtot,:) ;
 [~ ,index]  = sort(LineInteresting(:,7)) ;
 LineInteresting = LineInteresting(index,:)   ;
 
